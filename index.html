@@ -1,0 +1,1268 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>This Ground Is Yours Today</title>
+
+  <!-- Google Fonts: Poppins + Oswald (esports display) + Playfair Display (newspaper certificate) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,600&family=Poppins:wght@400;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+
+  <!--
+    CRITICAL: activate the landing screen immediately so the page
+    is never blank. This runs before DOMContentLoaded and before
+    any JS file loads. The .active class forces opacity:1 !important.
+  -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var landing = document.getElementById('landing-screen');
+      if (landing) landing.classList.add('active');
+    });
+  </script>
+</head>
+<body>
+
+  <!-- =============================================
+       LANDING SCREEN
+       ============================================= -->
+  <section id="landing-screen">
+
+    <!-- 1. VIDEO BACKGROUND
+         Replace the src with your actual stadium video URL.
+         The video is muted + autoplay + loop for a seamless background. -->
+    <div class="video-wrapper">
+      <video
+        id="bg-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        poster="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=1600&q=80"
+        aria-hidden="true"
+      >
+        <!-- ✏️ REPLACE THIS SRC with your stadium video file or URL -->
+        <source src="YOUR_STADIUM_VIDEO_URL.mp4" type="video/mp4" />
+        <!-- Fallback: browser will show the poster image if video can't load -->
+      </video>
+
+      <!-- Dark gradient overlay for text readability -->
+      <div class="video-overlay"></div>
+
+      <!-- Animated floodlight beams (pure CSS, no image needed) -->
+      <div class="floodlight fl-left"  aria-hidden="true"></div>
+      <div class="floodlight fl-right" aria-hidden="true"></div>
+    </div>
+
+    <!-- 2. HERO CONTENT -->
+    <div class="hero-content">
+
+      <!-- Top status bar — esports HUD feel -->
+      <div class="hud-bar" aria-hidden="true">
+        <span class="hud-item">
+          <span class="hud-dot"></span>MATCH DAY LIVE
+        </span>
+        <span class="hud-divider">|</span>
+        <span class="hud-item">BIRTHDAY SPECIAL EDITION</span>
+        <span class="hud-divider">|</span>
+        <span class="hud-item">
+          <span class="hud-dot hud-dot--amber"></span>STADIUM FULL
+        </span>
+      </div>
+
+      <!-- Glass dashboard card -->
+      <div class="hero-card">
+
+        <!-- Corner accents -->
+        <span class="corner-accent corner-tl" aria-hidden="true"></span>
+        <span class="corner-accent corner-tr" aria-hidden="true"></span>
+        <span class="corner-accent corner-bl" aria-hidden="true"></span>
+        <span class="corner-accent corner-br" aria-hidden="true"></span>
+
+        <!-- Eyebrow label -->
+        <p class="eyebrow">🏏 &nbsp; A Special Match Day &nbsp; 🏏</p>
+
+        <!-- Main headline — swap [NAME] with the birthday person's name -->
+        <h1 class="headline">
+          <span class="line line-1">THIS GROUND</span>
+          <span class="line line-2">IS YOURS TODAY,</span>
+          <span class="line line-3 name-highlight">ANNESHA</span>
+        </h1>
+
+        <!-- Decorative gold separator bar -->
+        <div class="hero-separator" aria-hidden="true">
+          <span class="sep-line"></span>
+          <span class="sep-diamond">◆</span>
+          <span class="sep-line"></span>
+        </div>
+
+        <!-- CTA row: button + decorative dot indicator -->
+        <div class="cta-row">
+          <button
+            class="toss-btn"
+            id="toss-btn"
+            aria-label="Toss the coin to start the celebration"
+          >
+            <!-- Shimmer streak — animates on hover -->
+            <span class="btn-shimmer" aria-hidden="true"></span>
+            <span class="btn-inner">Toss The Coin</span>
+          </button>
+
+          <!-- Decorative dot -->
+          <span class="indicator-dot" aria-hidden="true"></span>
+        </div>
+
+      </div><!-- end .hero-card -->
+
+    </div>
+
+
+
+  </section>
+
+  <!-- =============================================
+       SCREEN 2 — COIN TOSS
+       ============================================= -->
+  <section id="coin-toss-screen" aria-hidden="true">
+
+    <!-- Shared dark background particles (pure CSS) -->
+    <div class="ct-bg" aria-hidden="true">
+      <span class="particle p1"></span>
+      <span class="particle p2"></span>
+      <span class="particle p3"></span>
+      <span class="particle p4"></span>
+      <span class="particle p5"></span>
+    </div>
+
+    <div class="ct-inner">
+
+      <!-- 1. Romantic headline — hidden until toss resolves -->
+      <p class="ct-romantic-text" id="ct-romantic" aria-live="polite">
+        Before The Toss… You Already Won My Heart ❤️
+      </p>
+
+      <!-- 2. Screen title -->
+      <h2 class="ct-title">The Toss</h2>
+      <p class="ct-subtitle" id="ct-subtitle">Call it before the coin decides.</p>
+
+      <!-- 3. 3-D CSS Coin -->
+      <div class="coin-scene" aria-label="Coin">
+        <div class="coin" id="coin">
+          <!-- HEADS face (front) -->
+          <div class="coin-face coin-heads" aria-hidden="true">
+            <div class="coin-rim"></div>
+            <div class="coin-engrave">
+              <span class="coin-star">★</span>
+              <span class="coin-letter">H</span>
+            </div>
+          </div>
+          <!-- TAILS face (back — always flips to heads) -->
+          <div class="coin-face coin-tails" aria-hidden="true">
+            <div class="coin-rim"></div>
+            <div class="coin-engrave">
+              <span class="coin-star">★</span>
+              <span class="coin-letter">T</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Result label -->
+      <p class="ct-result" id="ct-result" aria-live="assertive"></p>
+
+      <!-- 5. Start Toss button -->
+      <button class="ct-btn ct-btn--primary" id="start-toss-btn">
+        Start Toss
+      </button>
+
+      <!-- 6. Start Betting button — hidden until toss resolves -->
+      <button class="ct-btn ct-btn--secondary" id="start-betting-btn" aria-hidden="true">
+        Start Betting 🏏
+      </button>
+
+    </div>
+  </section>
+
+  <!-- =============================================
+       SCREEN 3 — CRICKET GAME
+       ============================================= -->
+  <section id="cricket-game-screen" aria-hidden="true">
+
+    <!-- ── PHASE 1: BATTING ─────────────────────── -->
+    <div id="batting-phase">
+
+      <p class="cg-eyebrow">🏏 Batting Time!</p>
+      <h2 class="cg-title">Hit Every Ball!</h2>
+      <p class="cg-instruction" id="bat-instruction">
+        Move the bat left &amp; right to hit the ball. Score 3 shots to win!
+      </p>
+
+      <!-- Game arena — ball + bat live here -->
+      <div class="bat-arena" id="bat-arena" aria-label="Batting game arena">
+        <!-- Cricket ball (animated by JS) -->
+        <div class="cg-ball" id="cg-ball" aria-label="Cricket ball"></div>
+
+        <!-- Score flash (4 or 6 text) -->
+        <div class="score-flash" id="score-flash" aria-live="assertive"></div>
+
+        <!-- Cricket bat (player-controlled) -->
+        <div class="cg-bat" id="cg-bat" aria-label="Cricket bat">
+          <div class="bat-inner">
+            <div class="bat-handle"></div>
+            <div class="bat-blade">
+              <div class="bat-toe"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Commentary feed — messages appended on each hit -->
+      <div class="commentary-feed" id="commentary-feed" aria-live="polite" aria-relevant="additions"></div>
+
+      <!-- Hit The Stumps button — revealed after 3 shots -->
+      <button class="cg-btn cg-btn--gold" id="hit-stumps-btn" aria-hidden="true">
+        Hit The Stumps 🎯
+      </button>
+
+    </div>
+
+    <!-- ── PHASE 2: BOWLING ──────────────────────── -->
+    <div id="bowling-phase" aria-hidden="true">
+
+      <p class="cg-eyebrow">🎯 Bowl Them Out!</p>
+      <h2 class="cg-title">Hit The Stumps!</h2>
+      <p class="cg-instruction">Drag the ball up and release to bowl!</p>
+
+      <!-- Stumps hit counter badge -->
+      <div class="bowl-badge" id="bowl-badge" aria-live="polite">
+        STUMPS BROKEN: 0 / 1 ⚡
+      </div>
+
+      <!-- Pitch container — wraps stumps + arena as one visual pitch -->
+      <div class="bowl-pitch">
+
+        <!-- Crease line near stumps (top of pitch) -->
+        <div class="crease crease--top" aria-hidden="true"></div>
+
+        <!-- Stumps -->
+        <div class="stumps-row" id="stumps-row" aria-label="Cricket stumps">
+          <div class="stump-group" data-index="0">
+            <div class="bail bail-left"  aria-hidden="true"></div>
+            <div class="bail bail-right" aria-hidden="true"></div>
+            <div class="stump" aria-hidden="true"></div>
+            <div class="stump" aria-hidden="true"></div>
+            <div class="stump" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <!-- Impact flash -->
+        <div class="impact-flash" id="impact-flash" aria-hidden="true"></div>
+
+        <!-- Bowling arena — drag ball here -->
+        <div class="bowl-arena" id="bowl-arena" aria-label="Bowling game arena">
+          <div class="bowl-ball" id="bowl-ball" aria-label="Bowling ball"></div>
+
+          <!-- Animated arrow guide replaces plain text -->
+          <div class="bowl-hint" id="bowl-hint" aria-label="Drag upward to bowl">
+            <span class="bowl-arrow" aria-hidden="true">↑</span>
+            <span class="bowl-hint-text">Drag Up</span>
+          </div>
+        </div>
+
+        <!-- Crease line near bowler (bottom of pitch) -->
+        <div class="crease crease--bottom" aria-hidden="true"></div>
+
+      </div><!-- end .bowl-pitch -->
+
+      <!-- Bowling commentary feed — shown after hit -->
+      <div class="commentary-feed bowl-commentary-feed" id="bowl-commentary-feed"
+           aria-live="polite" aria-relevant="additions"></div>
+
+      <!-- Finale text -->
+      <p class="bowl-finale" id="bowl-finale" aria-live="assertive">
+        YOU CLEAN BOWLED MY HEART 💖
+      </p>
+
+      <!-- View Scoreboard button -->
+      <button class="cg-btn cg-btn--gold" id="view-scoreboard-btn" aria-hidden="true">
+        View the Scoreboard 🏆
+      </button>
+
+    </div><!-- end #bowling-phase -->
+
+  </section><!-- end #cricket-game-screen -->
+
+  <!-- =============================================
+       SCREEN 4 — SCOREBOARD & TROPHY
+       ============================================= -->
+  <section id="scoreboard-screen" aria-hidden="true">
+
+    <!-- Ambient particles (reuse same pattern) -->
+    <div class="ct-bg" aria-hidden="true">
+      <span class="particle p1"></span>
+      <span class="particle p3"></span>
+      <span class="particle p5"></span>
+    </div>
+
+    <div class="sb-inner">
+
+      <!-- ── PART A: SCOREBOARD CARD ── -->
+      <div id="sb-card-section">
+        <p class="sb-eyebrow">🏆 &nbsp; Full Match Summary &nbsp; 🏆</p>
+        <h2 class="sb-title">The Final<br><span class="sb-title-gold">Scoreboard</span></h2>
+
+        <!-- Stats grid — 2 × 3 -->
+        <div class="sb-card" role="table" aria-label="Match statistics">
+          <div class="sb-stat" role="row">
+            <span class="sb-icon" aria-hidden="true">💖</span>
+            <span class="sb-label">Hearts Won</span>
+            <span class="sb-value">100</span>
+          </div>
+          <div class="sb-stat" role="row">
+            <span class="sb-icon" aria-hidden="true">⚡</span>
+            <span class="sb-label">Smile Rate</span>
+            <span class="sb-value">999+</span>
+          </div>
+          <div class="sb-stat" role="row">
+            <span class="sb-icon" aria-hidden="true">🏏</span>
+            <span class="sb-label">Romantic Sixes</span>
+            <span class="sb-value">Unlimited</span>
+          </div>
+          <div class="sb-stat" role="row">
+            <span class="sb-icon" aria-hidden="true">🔥</span>
+            <span class="sb-label">Love Strike Rate</span>
+            <span class="sb-value">143.0</span>
+          </div>
+          <div class="sb-stat" role="row">
+            <span class="sb-icon" aria-hidden="true">💎</span>
+            <span class="sb-label">Loyalty %</span>
+            <span class="sb-value sb-value--sm">Beyond<br>Measure</span>
+          </div>
+          <div class="sb-stat sb-stat--gold" role="row">
+            <span class="sb-icon" aria-hidden="true">👑</span>
+            <span class="sb-label">Best BF Index</span>
+            <span class="sb-value">#1 Ranked</span>
+          </div>
+        </div>
+
+        <button class="sb-btn sb-btn--primary" id="continue-celebration-btn">
+          Continue Celebration 🎉
+        </button>
+      </div>
+
+      <!-- ── PART B: TROPHY ── -->
+      <div id="sb-trophy-section" aria-hidden="true">
+
+        <!-- Eyebrow and title — updated by JS on lift -->
+        <p class="sb-eyebrow" id="trophy-eyebrow">🎊 &nbsp; Moment of Glory &nbsp; 🎊</p>
+        <h2 class="sb-title" id="trophy-title">
+          Lift The<br><span class="sb-title-gold">Trophy</span>
+        </h2>
+
+        <!-- Spotlight cone behind trophy (CSS only, always present) -->
+        <div class="trophy-spotlight" aria-hidden="true"></div>
+
+        <!-- CSS Trophy + sparkle wrapper -->
+        <div class="trophy-stage">
+          <div class="trophy-wrap" id="trophy-wrap" aria-label="Golden trophy">
+            <div class="trophy" id="trophy">
+              <div class="trophy-lid"></div>
+              <div class="trophy-cup">
+                <div class="trophy-shine"></div>
+                <div class="trophy-star" aria-hidden="true">★</div>
+              </div>
+              <div class="trophy-stem"></div>
+              <div class="trophy-base"></div>
+            </div>
+          </div>
+          <!-- Sparkle particles — injected by JS into this layer -->
+          <div class="trophy-sparkles" id="trophy-sparkles" aria-hidden="true"></div>
+        </div>
+
+        <button class="sb-btn sb-btn--primary" id="lift-trophy-btn">
+          Lift The Trophy 🏆
+        </button>
+
+        <!-- ══ CROWD SCENE — fixed full-viewport overlay ══ -->
+        <div class="crowd-scene" id="crowd-scene" aria-hidden="true">
+
+          <!-- Canvas confetti (behind everything) -->
+          <canvas id="trophy-confetti" aria-hidden="true"></canvas>
+
+          <!--
+            Illustrated SVG Crowd
+            Two rows of detailed people with:
+            – Elliptical head (skin tones)
+            – Hair shape (ellipse clipped to top half)
+            – Colored shirt (torso path, not rectangle)
+            – Skin-tone forearms/hands
+            – Arms bent at elbow (two segments each)
+            – Back row slightly smaller + darker for depth
+            viewBox 1440 × 320 — ground at y=310
+          -->
+          <svg
+            class="crowd-svg"
+            id="crowd-svg"
+            viewBox="0 0 1440 320"
+            preserveAspectRatio="xMidYMax meet"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <defs>
+              <!-- Ground fade: transparent top → dark bottom -->
+              <linearGradient id="gndGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%"   stop-color="#050209" stop-opacity="0"/>
+                <stop offset="40%"  stop-color="#050209" stop-opacity="0.7"/>
+                <stop offset="100%" stop-color="#030107" stop-opacity="1"/>
+              </linearGradient>
+              <!-- Soft blur for back-row depth -->
+              <filter id="depthBlur">
+                <feGaussianBlur stdDeviation="1.4"/>
+              </filter>
+              <!-- Skin glow -->
+              <filter id="skinGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="2" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+
+            <!--
+              ══════════════════════════════════════════════
+              BACK ROW — 20 figures, y-baseline 240, scale ~0.78
+              Darker, slightly blurred for depth illusion
+              ══════════════════════════════════════════════
+            -->
+            <g filter="url(#depthBlur)" opacity="0.72">
+
+              <!-- BR-1 blue shirt, dark skin, arms V-up -->
+              <g class="crowd-person" style="--delay:0.11s;--base:240">
+                <ellipse cx="36"  cy="200" rx="10" ry="11" fill="#c68642"/>
+                <ellipse cx="36"  cy="192" rx="8"  ry="5"  fill="#2c1a0e"/>
+                <path d="M26,211 Q36,225 46,211 L44,240 L28,240 Z" fill="#1565c0"/>
+                <line x1="28" y1="217" x2="14" y2="200" stroke="#c68642" stroke-width="5" stroke-linecap="round"/>
+                <line x1="14" y1="200" x2="8"  y2="186" stroke="#c68642" stroke-width="4" stroke-linecap="round"/>
+                <line x1="44" y1="217" x2="58" y2="200" stroke="#c68642" stroke-width="5" stroke-linecap="round"/>
+                <line x1="58" y1="200" x2="64" y2="185" stroke="#c68642" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+              <!-- BR-2 red shirt, light skin -->
+              <g class="crowd-person" style="--delay:0.04s;--base:240">
+                <ellipse cx="108" cy="202" rx="10" ry="11" fill="#f1c27d"/>
+                <ellipse cx="108" cy="194" rx="8"  ry="5"  fill="#8b5e3c"/>
+                <path d="M98,213 Q108,227 118,213 L116,240 L100,240 Z" fill="#c62828"/>
+                <line x1="100" y1="219" x2="84"  y2="202" stroke="#f1c27d" stroke-width="5" stroke-linecap="round"/>
+                <line x1="84"  y1="202" x2="78"  y2="188" stroke="#f1c27d" stroke-width="4" stroke-linecap="round"/>
+                <line x1="116" y1="219" x2="132" y2="199" stroke="#f1c27d" stroke-width="5" stroke-linecap="round"/>
+                <line x1="132" y1="199" x2="138" y2="185" stroke="#f1c27d" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+              <!-- BR-3 yellow shirt, medium skin, gold flag -->
+              <g class="crowd-person" style="--delay:0.19s;--base:240">
+                <ellipse cx="180" cy="199" rx="10" ry="11" fill="#d4956a"/>
+                <ellipse cx="180" cy="191" rx="8"  ry="5"  fill="#3b1f0a"/>
+                <path d="M170,210 Q180,224 190,210 L188,240 L172,240 Z" fill="#f9a825"/>
+                <line x1="172" y1="216" x2="156" y2="196" stroke="#d4956a" stroke-width="5" stroke-linecap="round"/>
+                <line x1="156" y1="196" x2="152" y2="180" stroke="#d4956a" stroke-width="4" stroke-linecap="round"/>
+                <line x1="152" y1="180" x2="152" y2="162" stroke="#d4af37" stroke-width="3"/>
+                <polygon points="152,162 168,168 152,174" fill="#d4af37"/>
+                <line x1="188" y1="216" x2="204" y2="197" stroke="#d4956a" stroke-width="5" stroke-linecap="round"/>
+                <line x1="204" y1="197" x2="208" y2="183" stroke="#d4956a" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+              <!-- BR-4 white shirt, olive skin -->
+              <g class="crowd-person" style="--delay:0.26s;--base:240">
+                <ellipse cx="252" cy="201" rx="10" ry="11" fill="#c8a96e"/>
+                <ellipse cx="252" cy="193" rx="8"  ry="5"  fill="#4a2c10"/>
+                <path d="M242,212 Q252,226 262,212 L260,240 L244,240 Z" fill="#eceff1"/>
+                <line x1="244" y1="218" x2="228" y2="199" stroke="#c8a96e" stroke-width="5" stroke-linecap="round"/>
+                <line x1="228" y1="199" x2="222" y2="185" stroke="#c8a96e" stroke-width="4" stroke-linecap="round"/>
+                <line x1="260" y1="218" x2="276" y2="200" stroke="#c8a96e" stroke-width="5" stroke-linecap="round"/>
+                <line x1="276" y1="200" x2="280" y2="185" stroke="#c8a96e" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+              <!-- BR-5 green shirt, dark skin, arms spread high -->
+              <g class="crowd-person" style="--delay:0.08s;--base:240">
+                <ellipse cx="324" cy="198" rx="11" ry="12" fill="#8d5524"/>
+                <ellipse cx="324" cy="189" rx="9"  ry="5"  fill="#1a0a00"/>
+                <path d="M313,210 Q324,225 335,210 L333,240 L315,240 Z" fill="#2e7d32"/>
+                <line x1="315" y1="216" x2="296" y2="195" stroke="#8d5524" stroke-width="5" stroke-linecap="round"/>
+                <line x1="296" y1="195" x2="288" y2="179" stroke="#8d5524" stroke-width="4" stroke-linecap="round"/>
+                <line x1="333" y1="216" x2="352" y2="193" stroke="#8d5524" stroke-width="5" stroke-linecap="round"/>
+                <line x1="352" y1="193" x2="360" y2="177" stroke="#8d5524" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+              <!-- BR-6 purple shirt, tan skin -->
+              <g class="crowd-person" style="--delay:0.15s;--base:240">
+                <ellipse cx="396" cy="200" rx="10" ry="11" fill="#e0ac69"/>
+                <ellipse cx="396" cy="192" rx="8"  ry="5"  fill="#5c3317"/>
+                <path d="M386,211 Q396,225 406,211 L404,240 L388,240 Z" fill="#6a1b9a"/>
+                <line x1="388" y1="217" x2="372" y2="198" stroke="#e0ac69" stroke-width="5" stroke-linecap="round"/>
+                <line x1="372" y1="198" x2="366" y2="183" stroke="#e0ac69" stroke-width="4" stroke-linecap="round"/>
+                <line x1="404" y1="217" x2="420" y2="197" stroke="#e0ac69" stroke-width="5" stroke-linecap="round"/>
+                <line x1="420" y1="197" x2="426" y2="181" stroke="#e0ac69" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+              <!-- BR-7 orange shirt, light skin, pink flag -->
+              <g class="crowd-person" style="--delay:0.22s;--base:240">
+                <ellipse cx="468" cy="199" rx="10" ry="11" fill="#f1c27d"/>
+                <ellipse cx="468" cy="191" rx="8"  ry="5"  fill="#a0522d"/>
+                <path d="M458,210 Q468,224 478,210 L476,240 L460,240 Z" fill="#e65100"/>
+                <line x1="460" y1="216" x2="444" y2="197" stroke="#f1c27d" stroke-width="5" stroke-linecap="round"/>
+                <line x1="444" y1="197" x2="440" y2="181" stroke="#f1c27d" stroke-width="4" stroke-linecap="round"/>
+                <line x1="440" y1="181" x2="440" y2="161" stroke="#ff6b9d" stroke-width="3"/>
+                <polygon points="440,161 456,167 440,173" fill="#ff6b9d"/>
+                <line x1="476" y1="216" x2="492" y2="196" stroke="#f1c27d" stroke-width="5" stroke-linecap="round"/>
+                <line x1="492" y1="196" x2="498" y2="181" stroke="#f1c27d" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+              <!-- BR-8 teal shirt, medium skin -->
+              <g class="crowd-person" style="--delay:0.06s;--base:240">
+                <ellipse cx="540" cy="201" rx="10" ry="11" fill="#c68642"/>
+                <ellipse cx="540" cy="193" rx="8"  ry="5"  fill="#2c1a0e"/>
+                <path d="M530,212 Q540,226 550,212 L548,240 L532,240 Z" fill="#00695c"/>
+                <line x1="532" y1="218" x2="516" y2="199" stroke="#c68642" stroke-width="5" stroke-linecap="round"/>
+                <line x1="516" y1="199" x2="510" y2="184" stroke="#c68642" stroke-width="4" stroke-linecap="round"/>
+                <line x1="548" y1="218" x2="564" y2="198" stroke="#c68642" stroke-width="5" stroke-linecap="round"/>
+                <line x1="564" y1="198" x2="570" y2="183" stroke="#c68642" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+              <!-- BR-9 navy shirt, fair skin, both flags -->
+              <g class="crowd-person" style="--delay:0.13s;--base:240">
+                <ellipse cx="612" cy="198" rx="11" ry="12" fill="#ffcd94"/>
+                <ellipse cx="612" cy="189" rx="9"  ry="5"  fill="#6b3a2a"/>
+                <path d="M601,210 Q612,225 623,210 L621,240 L603,240 Z" fill="#1a237e"/>
+                <line x1="603" y1="216" x2="584" y2="195" stroke="#ffcd94" stroke-width="5" stroke-linecap="round"/>
+                <line x1="584" y1="195" x2="578" y2="178" stroke="#ffcd94" stroke-width="4" stroke-linecap="round"/>
+                <line x1="578" y1="178" x2="578" y2="158" stroke="#d4af37" stroke-width="3"/>
+                <polygon points="578,158 594,164 578,170" fill="#d4af37"/>
+                <line x1="621" y1="216" x2="640" y2="194" stroke="#ffcd94" stroke-width="5" stroke-linecap="round"/>
+                <line x1="640" y1="194" x2="646" y2="177" stroke="#ffcd94" stroke-width="4" stroke-linecap="round"/>
+                <line x1="646" y1="177" x2="646" y2="157" stroke="#d4af37" stroke-width="3"/>
+                <polygon points="646,157 662,163 646,169" fill="#d4af37"/>
+              </g>
+
+              <!-- BR-10 burgundy, dark skin -->
+              <g class="crowd-person" style="--delay:0.20s;--base:240">
+                <ellipse cx="692" cy="200" rx="10" ry="11" fill="#8d5524"/>
+                <ellipse cx="692" cy="192" rx="8"  ry="5"  fill="#1a0a00"/>
+                <path d="M682,211 Q692,225 702,211 L700,240 L684,240 Z" fill="#880e4f"/>
+                <line x1="684" y1="217" x2="668" y2="198" stroke="#8d5524" stroke-width="5" stroke-linecap="round"/>
+                <line x1="668" y1="198" x2="662" y2="183" stroke="#8d5524" stroke-width="4" stroke-linecap="round"/>
+                <line x1="700" y1="217" x2="716" y2="197" stroke="#8d5524" stroke-width="5" stroke-linecap="round"/>
+                <line x1="716" y1="197" x2="722" y2="182" stroke="#8d5524" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+              <!-- BR-11 sky blue, olive -->
+              <g class="crowd-person" style="--delay:0.07s;--base:240">
+                <ellipse cx="764" cy="201" rx="10" ry="11" fill="#c8a96e"/>
+                <ellipse cx="764" cy="193" rx="8"  ry="5"  fill="#4a2c10"/>
+                <path d="M754,212 Q764,226 774,212 L772,240 L756,240 Z" fill="#0288d1"/>
+                <line x1="756" y1="218" x2="740" y2="199" stroke="#c8a96e" stroke-width="5" stroke-linecap="round"/>
+                <line x1="740" y1="199" x2="734" y2="184" stroke="#c8a96e" stroke-width="4" stroke-linecap="round"/>
+                <line x1="772" y1="218" x2="788" y2="198" stroke="#c8a96e" stroke-width="5" stroke-linecap="round"/>
+                <line x1="788" y1="198" x2="794" y2="183" stroke="#c8a96e" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+              <!-- BR-12 lime, fair, pink flag -->
+              <g class="crowd-person" style="--delay:0.24s;--base:240">
+                <ellipse cx="836" cy="199" rx="10" ry="11" fill="#f1c27d"/>
+                <ellipse cx="836" cy="191" rx="8"  ry="5"  fill="#8b5e3c"/>
+                <path d="M826,210 Q836,224 846,210 L844,240 L828,240 Z" fill="#558b2f"/>
+                <line x1="828" y1="216" x2="812" y2="197" stroke="#f1c27d" stroke-width="5" stroke-linecap="round"/>
+                <line x1="812" y1="197" x2="808" y2="181" stroke="#f1c27d" stroke-width="4" stroke-linecap="round"/>
+                <line x1="844" y1="216" x2="860" y2="196" stroke="#f1c27d" stroke-width="5" stroke-linecap="round"/>
+                <line x1="860" y1="196" x2="864" y2="179" stroke="#f1c27d" stroke-width="4" stroke-linecap="round"/>
+                <line x1="864" y1="179" x2="864" y2="159" stroke="#ff6b9d" stroke-width="3"/>
+                <polygon points="864,159 880,165 864,171" fill="#ff6b9d"/>
+              </g>
+
+              <!-- BR-13 red, dark skin -->
+              <g class="crowd-person" style="--delay:0.16s;--base:240">
+                <ellipse cx="908" cy="200" rx="10" ry="11" fill="#8d5524"/>
+                <ellipse cx="908" cy="192" rx="8"  ry="5"  fill="#1a0a00"/>
+                <path d="M898,211 Q908,225 918,211 L916,240 L900,240 Z" fill="#b71c1c"/>
+                <line x1="900" y1="217" x2="882" y2="197" stroke="#8d5524" stroke-width="5" stroke-linecap="round"/>
+                <line x1="882" y1="197" x2="876" y2="181" stroke="#8d5524" stroke-width="4" stroke-linecap="round"/>
+                <line x1="916" y1="217" x2="934" y2="196" stroke="#8d5524" stroke-width="5" stroke-linecap="round"/>
+                <line x1="934" y1="196" x2="940" y2="181" stroke="#8d5524" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+              <!-- BR-14 white, tan, gold flag -->
+              <g class="crowd-person" style="--delay:0.03s;--base:240">
+                <ellipse cx="980" cy="199" rx="10" ry="11" fill="#e0ac69"/>
+                <ellipse cx="980" cy="191" rx="8"  ry="5"  fill="#5c3317"/>
+                <path d="M970,210 Q980,224 990,210 L988,240 L972,240 Z" fill="#fafafa"/>
+                <line x1="972" y1="216" x2="955" y2="196" stroke="#e0ac69" stroke-width="5" stroke-linecap="round"/>
+                <line x1="955" y1="196" x2="950" y2="179" stroke="#e0ac69" stroke-width="4" stroke-linecap="round"/>
+                <line x1="950" y1="179" x2="950" y2="159" stroke="#d4af37" stroke-width="3"/>
+                <polygon points="950,159 966,165 950,171" fill="#d4af37"/>
+                <line x1="988" y1="216" x2="1005" y2="195" stroke="#e0ac69" stroke-width="5" stroke-linecap="round"/>
+                <line x1="1005" y1="195" x2="1010" y2="179" stroke="#e0ac69" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+              <!-- BR-15 navy, fair, arms V -->
+              <g class="crowd-person" style="--delay:0.18s;--base:240">
+                <ellipse cx="1052" cy="200" rx="10" ry="11" fill="#ffcd94"/>
+                <ellipse cx="1052" cy="192" rx="8"  ry="5"  fill="#6b3a2a"/>
+                <path d="M1042,211 Q1052,225 1062,211 L1060,240 L1044,240 Z" fill="#283593"/>
+                <line x1="1044" y1="217" x2="1026" y2="197" stroke="#ffcd94" stroke-width="5" stroke-linecap="round"/>
+                <line x1="1026" y1="197" x2="1020" y2="181" stroke="#ffcd94" stroke-width="4" stroke-linecap="round"/>
+                <line x1="1060" y1="217" x2="1078" y2="196" stroke="#ffcd94" stroke-width="5" stroke-linecap="round"/>
+                <line x1="1078" y1="196" x2="1084" y2="181" stroke="#ffcd94" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+              <!-- BR-16 orange, dark, pink flag -->
+              <g class="crowd-person" style="--delay:0.09s;--base:240">
+                <ellipse cx="1124" cy="201" rx="10" ry="11" fill="#c68642"/>
+                <ellipse cx="1124" cy="193" rx="8"  ry="5"  fill="#2c1a0e"/>
+                <path d="M1114,212 Q1124,226 1134,212 L1132,240 L1116,240 Z" fill="#e64a19"/>
+                <line x1="1116" y1="218" x2="1098" y2="198" stroke="#c68642" stroke-width="5" stroke-linecap="round"/>
+                <line x1="1098" y1="198" x2="1092" y2="183" stroke="#c68642" stroke-width="4" stroke-linecap="round"/>
+                <line x1="1092" y1="183" x2="1092" y2="163" stroke="#ff6b9d" stroke-width="3"/>
+                <polygon points="1092,163 1108,169 1092,175" fill="#ff6b9d"/>
+                <line x1="1132" y1="218" x2="1150" y2="197" stroke="#c68642" stroke-width="5" stroke-linecap="round"/>
+                <line x1="1150" y1="197" x2="1156" y2="182" stroke="#c68642" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+              <!-- BR-17 teal, olive, arms raised -->
+              <g class="crowd-person" style="--delay:0.21s;--base:240">
+                <ellipse cx="1196" cy="200" rx="10" ry="11" fill="#c8a96e"/>
+                <ellipse cx="1196" cy="192" rx="8"  ry="5"  fill="#4a2c10"/>
+                <path d="M1186,211 Q1196,225 1206,211 L1204,240 L1188,240 Z" fill="#004d40"/>
+                <line x1="1188" y1="217" x2="1171" y2="197" stroke="#c8a96e" stroke-width="5" stroke-linecap="round"/>
+                <line x1="1171" y1="197" x2="1164" y2="181" stroke="#c8a96e" stroke-width="4" stroke-linecap="round"/>
+                <line x1="1204" y1="217" x2="1222" y2="196" stroke="#c8a96e" stroke-width="5" stroke-linecap="round"/>
+                <line x1="1222" y1="196" x2="1228" y2="181" stroke="#c8a96e" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+              <!-- BR-18 purple, fair, gold flag -->
+              <g class="crowd-person" style="--delay:0.14s;--base:240">
+                <ellipse cx="1268" cy="199" rx="10" ry="11" fill="#f1c27d"/>
+                <ellipse cx="1268" cy="191" rx="8"  ry="5"  fill="#8b5e3c"/>
+                <path d="M1258,210 Q1268,224 1278,210 L1276,240 L1260,240 Z" fill="#4a148c"/>
+                <line x1="1260" y1="216" x2="1242" y2="196" stroke="#f1c27d" stroke-width="5" stroke-linecap="round"/>
+                <line x1="1242" y1="196" x2="1236" y2="179" stroke="#f1c27d" stroke-width="4" stroke-linecap="round"/>
+                <line x1="1236" y1="179" x2="1236" y2="159" stroke="#d4af37" stroke-width="3"/>
+                <polygon points="1236,159 1252,165 1236,171" fill="#d4af37"/>
+                <line x1="1276" y1="216" x2="1294" y2="195" stroke="#f1c27d" stroke-width="5" stroke-linecap="round"/>
+                <line x1="1294" y1="195" x2="1300" y2="180" stroke="#f1c27d" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+              <!-- BR-19 blue, dark skin -->
+              <g class="crowd-person" style="--delay:0.05s;--base:240">
+                <ellipse cx="1340" cy="200" rx="10" ry="11" fill="#8d5524"/>
+                <ellipse cx="1340" cy="192" rx="8"  ry="5"  fill="#1a0a00"/>
+                <path d="M1330,211 Q1340,225 1350,211 L1348,240 L1332,240 Z" fill="#1565c0"/>
+                <line x1="1332" y1="217" x2="1314" y2="197" stroke="#8d5524" stroke-width="5" stroke-linecap="round"/>
+                <line x1="1314" y1="197" x2="1308" y2="181" stroke="#8d5524" stroke-width="4" stroke-linecap="round"/>
+                <line x1="1348" y1="217" x2="1366" y2="196" stroke="#8d5524" stroke-width="5" stroke-linecap="round"/>
+                <line x1="1366" y1="196" x2="1372" y2="181" stroke="#8d5524" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+              <!-- BR-20 red, tan -->
+              <g class="crowd-person" style="--delay:0.17s;--base:240">
+                <ellipse cx="1412" cy="201" rx="10" ry="11" fill="#e0ac69"/>
+                <ellipse cx="1412" cy="193" rx="8"  ry="5"  fill="#5c3317"/>
+                <path d="M1402,212 Q1412,226 1422,212 L1420,240 L1404,240 Z" fill="#c62828"/>
+                <line x1="1404" y1="218" x2="1386" y2="198" stroke="#e0ac69" stroke-width="5" stroke-linecap="round"/>
+                <line x1="1386" y1="198" x2="1380" y2="182" stroke="#e0ac69" stroke-width="4" stroke-linecap="round"/>
+                <line x1="1420" y1="218" x2="1438" y2="197" stroke="#e0ac69" stroke-width="5" stroke-linecap="round"/>
+                <line x1="1438" y1="197" x2="1444" y2="182" stroke="#e0ac69" stroke-width="4" stroke-linecap="round"/>
+              </g>
+
+            </g><!-- end back row -->
+
+            <!--
+              ══════════════════════════════════════════════
+              FRONT ROW — 18 figures, y-baseline 290, full size
+              ══════════════════════════════════════════════
+            -->
+
+            <!-- FR-1 cricket blue, dark skin, arms V-up -->
+            <g class="crowd-person" style="--delay:0s;--base:290">
+              <ellipse cx="44"  cy="232" rx="13" ry="14" fill="#8d5524"/>
+              <ellipse cx="44"  cy="221" rx="11" ry="6"  fill="#1a0a00"/>
+              <path d="M31,247 Q44,266 57,247 L55,290 L33,290 Z" fill="#1565c0"/>
+              <line x1="33" y1="254" x2="12"  y2="232" stroke="#8d5524" stroke-width="7" stroke-linecap="round"/>
+              <line x1="12" y1="232" x2="5"   y2="213" stroke="#8d5524" stroke-width="5" stroke-linecap="round"/>
+              <line x1="55" y1="254" x2="76"  y2="231" stroke="#8d5524" stroke-width="7" stroke-linecap="round"/>
+              <line x1="76" y1="231" x2="83"  y2="212" stroke="#8d5524" stroke-width="5" stroke-linecap="round"/>
+            </g>
+
+            <!-- FR-2 red, light skin, gold flag high -->
+            <g class="crowd-person" style="--delay:0.16s;--base:290">
+              <ellipse cx="124" cy="228" rx="13" ry="14" fill="#f1c27d"/>
+              <ellipse cx="124" cy="217" rx="11" ry="6"  fill="#8b5e3c"/>
+              <path d="M111,243 Q124,262 137,243 L135,290 L113,290 Z" fill="#c62828"/>
+              <line x1="113" y1="250" x2="90"  y2="228" stroke="#f1c27d" stroke-width="7" stroke-linecap="round"/>
+              <line x1="90"  y1="228" x2="84"  y2="207" stroke="#f1c27d" stroke-width="5" stroke-linecap="round"/>
+              <line x1="84"  y1="207" x2="84"  y2="183" stroke="#d4af37" stroke-width="4"/>
+              <polygon points="84,183 104,191 84,199" fill="#d4af37"/>
+              <line x1="135" y1="250" x2="158" y2="226" stroke="#f1c27d" stroke-width="7" stroke-linecap="round"/>
+              <line x1="158" y1="226" x2="164" y2="207" stroke="#f1c27d" stroke-width="5" stroke-linecap="round"/>
+            </g>
+
+            <!-- FR-3 yellow, medium skin -->
+            <g class="crowd-person" style="--delay:0.06s;--base:290">
+              <ellipse cx="210" cy="231" rx="13" ry="14" fill="#c68642"/>
+              <ellipse cx="210" cy="220" rx="11" ry="6"  fill="#2c1a0e"/>
+              <path d="M197,246 Q210,265 223,246 L221,290 L199,290 Z" fill="#f9a825"/>
+              <line x1="199" y1="253" x2="178" y2="232" stroke="#c68642" stroke-width="7" stroke-linecap="round"/>
+              <line x1="178" y1="232" x2="171" y2="212" stroke="#c68642" stroke-width="5" stroke-linecap="round"/>
+              <line x1="221" y1="253" x2="242" y2="230" stroke="#c68642" stroke-width="7" stroke-linecap="round"/>
+              <line x1="242" y1="230" x2="249" y2="211" stroke="#c68642" stroke-width="5" stroke-linecap="round"/>
+            </g>
+
+            <!-- FR-4 white, olive, pink flag -->
+            <g class="crowd-person" style="--delay:0.22s;--base:290">
+              <ellipse cx="296" cy="229" rx="13" ry="14" fill="#c8a96e"/>
+              <ellipse cx="296" cy="218" rx="11" ry="6"  fill="#4a2c10"/>
+              <path d="M283,244 Q296,263 309,244 L307,290 L285,290 Z" fill="#eceff1"/>
+              <line x1="285" y1="251" x2="262" y2="230" stroke="#c8a96e" stroke-width="7" stroke-linecap="round"/>
+              <line x1="262" y1="230" x2="256" y2="210" stroke="#c8a96e" stroke-width="5" stroke-linecap="round"/>
+              <line x1="256" y1="210" x2="256" y2="186" stroke="#ff6b9d" stroke-width="4"/>
+              <polygon points="256,186 276,194 256,202" fill="#ff6b9d"/>
+              <line x1="307" y1="251" x2="330" y2="228" stroke="#c8a96e" stroke-width="7" stroke-linecap="round"/>
+              <line x1="330" y1="228" x2="337" y2="209" stroke="#c8a96e" stroke-width="5" stroke-linecap="round"/>
+            </g>
+
+            <!-- FR-5 green, dark, both arms up high -->
+            <g class="crowd-person" style="--delay:0.10s;--base:290">
+              <ellipse cx="382" cy="227" rx="14" ry="15" fill="#8d5524"/>
+              <ellipse cx="382" cy="215" rx="12" ry="7"  fill="#1a0a00"/>
+              <path d="M368,243 Q382,263 396,243 L394,290 L370,290 Z" fill="#2e7d32"/>
+              <line x1="370" y1="250" x2="347" y2="226" stroke="#8d5524" stroke-width="7" stroke-linecap="round"/>
+              <line x1="347" y1="226" x2="339" y2="205" stroke="#8d5524" stroke-width="5" stroke-linecap="round"/>
+              <line x1="394" y1="250" x2="417" y2="224" stroke="#8d5524" stroke-width="7" stroke-linecap="round"/>
+              <line x1="417" y1="224" x2="425" y2="203" stroke="#8d5524" stroke-width="5" stroke-linecap="round"/>
+            </g>
+
+            <!-- FR-6 purple, fair, gold flag -->
+            <g class="crowd-person" style="--delay:0.19s;--base:290">
+              <ellipse cx="468" cy="230" rx="13" ry="14" fill="#ffcd94"/>
+              <ellipse cx="468" cy="219" rx="11" ry="6"  fill="#6b3a2a"/>
+              <path d="M455,245 Q468,264 481,245 L479,290 L457,290 Z" fill="#6a1b9a"/>
+              <line x1="457" y1="252" x2="434" y2="231" stroke="#ffcd94" stroke-width="7" stroke-linecap="round"/>
+              <line x1="434" y1="231" x2="427" y2="210" stroke="#ffcd94" stroke-width="5" stroke-linecap="round"/>
+              <line x1="427" y1="210" x2="427" y2="186" stroke="#d4af37" stroke-width="4"/>
+              <polygon points="427,186 447,194 427,202" fill="#d4af37"/>
+              <line x1="479" y1="252" x2="502" y2="229" stroke="#ffcd94" stroke-width="7" stroke-linecap="round"/>
+              <line x1="502" y1="229" x2="509" y2="210" stroke="#ffcd94" stroke-width="5" stroke-linecap="round"/>
+            </g>
+
+            <!-- FR-7 orange, tan, arms spread -->
+            <g class="crowd-person" style="--delay:0.04s;--base:290">
+              <ellipse cx="556" cy="228" rx="13" ry="14" fill="#e0ac69"/>
+              <ellipse cx="556" cy="217" rx="11" ry="6"  fill="#5c3317"/>
+              <path d="M543,243 Q556,262 569,243 L567,290 L545,290 Z" fill="#e65100"/>
+              <line x1="545" y1="250" x2="520" y2="228" stroke="#e0ac69" stroke-width="7" stroke-linecap="round"/>
+              <line x1="520" y1="228" x2="513" y2="207" stroke="#e0ac69" stroke-width="5" stroke-linecap="round"/>
+              <line x1="567" y1="250" x2="592" y2="227" stroke="#e0ac69" stroke-width="7" stroke-linecap="round"/>
+              <line x1="592" y1="227" x2="599" y2="207" stroke="#e0ac69" stroke-width="5" stroke-linecap="round"/>
+            </g>
+
+            <!-- FR-8 cricket blue, dark, pink flag -->
+            <g class="crowd-person" style="--delay:0.14s;--base:290">
+              <ellipse cx="644" cy="226" rx="14" ry="15" fill="#8d5524"/>
+              <ellipse cx="644" cy="214" rx="12" ry="7"  fill="#1a0a00"/>
+              <path d="M630,242 Q644,262 658,242 L656,290 L632,290 Z" fill="#1565c0"/>
+              <line x1="632" y1="249" x2="607" y2="226" stroke="#8d5524" stroke-width="7" stroke-linecap="round"/>
+              <line x1="607" y1="226" x2="599" y2="205" stroke="#8d5524" stroke-width="5" stroke-linecap="round"/>
+              <line x1="656" y1="249" x2="681" y2="225" stroke="#8d5524" stroke-width="7" stroke-linecap="round"/>
+              <line x1="681" y1="225" x2="687" y2="203" stroke="#8d5524" stroke-width="5" stroke-linecap="round"/>
+              <line x1="687" y1="203" x2="687" y2="179" stroke="#ff6b9d" stroke-width="4"/>
+              <polygon points="687,179 707,187 687,195" fill="#ff6b9d"/>
+            </g>
+
+            <!-- FR-9 teal, fair, both flags -->
+            <g class="crowd-person" style="--delay:0.24s;--base:290">
+              <ellipse cx="732" cy="228" rx="13" ry="14" fill="#f1c27d"/>
+              <ellipse cx="732" cy="217" rx="11" ry="6"  fill="#8b5e3c"/>
+              <path d="M719,243 Q732,262 745,243 L743,290 L721,290 Z" fill="#00695c"/>
+              <line x1="721" y1="250" x2="698" y2="229" stroke="#f1c27d" stroke-width="7" stroke-linecap="round"/>
+              <line x1="698" y1="229" x2="690" y2="207" stroke="#f1c27d" stroke-width="5" stroke-linecap="round"/>
+              <line x1="690" y1="207" x2="690" y2="183" stroke="#d4af37" stroke-width="4"/>
+              <polygon points="690,183 710,191 690,199" fill="#d4af37"/>
+              <line x1="743" y1="250" x2="766" y2="228" stroke="#f1c27d" stroke-width="7" stroke-linecap="round"/>
+              <line x1="766" y1="228" x2="773" y2="207" stroke="#f1c27d" stroke-width="5" stroke-linecap="round"/>
+              <line x1="773" y1="207" x2="773" y2="183" stroke="#d4af37" stroke-width="4"/>
+              <polygon points="773,183 793,191 773,199" fill="#d4af37"/>
+            </g>
+
+            <!-- FR-10 red, olive -->
+            <g class="crowd-person" style="--delay:0.08s;--base:290">
+              <ellipse cx="822" cy="229" rx="13" ry="14" fill="#c8a96e"/>
+              <ellipse cx="822" cy="218" rx="11" ry="6"  fill="#4a2c10"/>
+              <path d="M809,244 Q822,263 835,244 L833,290 L811,290 Z" fill="#b71c1c"/>
+              <line x1="811" y1="251" x2="788" y2="230" stroke="#c8a96e" stroke-width="7" stroke-linecap="round"/>
+              <line x1="788" y1="230" x2="781" y2="210" stroke="#c8a96e" stroke-width="5" stroke-linecap="round"/>
+              <line x1="833" y1="251" x2="856" y2="228" stroke="#c8a96e" stroke-width="7" stroke-linecap="round"/>
+              <line x1="856" y1="228" x2="863" y2="209" stroke="#c8a96e" stroke-width="5" stroke-linecap="round"/>
+            </g>
+
+            <!-- FR-11 white, dark, gold flag -->
+            <g class="crowd-person" style="--delay:0.20s;--base:290">
+              <ellipse cx="910" cy="227" rx="14" ry="15" fill="#c68642"/>
+              <ellipse cx="910" cy="215" rx="12" ry="7"  fill="#2c1a0e"/>
+              <path d="M896,243 Q910,263 924,243 L922,290 L898,290 Z" fill="#fafafa"/>
+              <line x1="898" y1="250" x2="873" y2="227" stroke="#c68642" stroke-width="7" stroke-linecap="round"/>
+              <line x1="873" y1="227" x2="865" y2="205" stroke="#c68642" stroke-width="5" stroke-linecap="round"/>
+              <line x1="865" y1="205" x2="865" y2="181" stroke="#d4af37" stroke-width="4"/>
+              <polygon points="865,181 885,189 865,197" fill="#d4af37"/>
+              <line x1="922" y1="250" x2="947" y2="226" stroke="#c68642" stroke-width="7" stroke-linecap="round"/>
+              <line x1="947" y1="226" x2="955" y2="206" stroke="#c68642" stroke-width="5" stroke-linecap="round"/>
+            </g>
+
+            <!-- FR-12 sky, light, arms high -->
+            <g class="crowd-person" style="--delay:0.12s;--base:290">
+              <ellipse cx="998" cy="230" rx="13" ry="14" fill="#ffcd94"/>
+              <ellipse cx="998" cy="219" rx="11" ry="6"  fill="#6b3a2a"/>
+              <path d="M985,245 Q998,264 1011,245 L1009,290 L987,290 Z" fill="#0288d1"/>
+              <line x1="987"  y1="252" x2="964"  y2="231" stroke="#ffcd94" stroke-width="7" stroke-linecap="round"/>
+              <line x1="964"  y1="231" x2="956"  y2="210" stroke="#ffcd94" stroke-width="5" stroke-linecap="round"/>
+              <line x1="1009" y1="252" x2="1032" y2="229" stroke="#ffcd94" stroke-width="7" stroke-linecap="round"/>
+              <line x1="1032" y1="229" x2="1039" y2="209" stroke="#ffcd94" stroke-width="5" stroke-linecap="round"/>
+            </g>
+
+            <!-- FR-13 lime, tan, pink flag -->
+            <g class="crowd-person" style="--delay:0.18s;--base:290">
+              <ellipse cx="1086" cy="228" rx="13" ry="14" fill="#e0ac69"/>
+              <ellipse cx="1086" cy="217" rx="11" ry="6"  fill="#5c3317"/>
+              <path d="M1073,243 Q1086,262 1099,243 L1097,290 L1075,290 Z" fill="#558b2f"/>
+              <line x1="1075" y1="250" x2="1050" y2="229" stroke="#e0ac69" stroke-width="7" stroke-linecap="round"/>
+              <line x1="1050" y1="229" x2="1043" y2="208" stroke="#e0ac69" stroke-width="5" stroke-linecap="round"/>
+              <line x1="1097" y1="250" x2="1122" y2="227" stroke="#e0ac69" stroke-width="7" stroke-linecap="round"/>
+              <line x1="1122" y1="227" x2="1128" y2="206" stroke="#e0ac69" stroke-width="5" stroke-linecap="round"/>
+              <line x1="1128" y1="206" x2="1128" y2="182" stroke="#ff6b9d" stroke-width="4"/>
+              <polygon points="1128,182 1148,190 1128,198" fill="#ff6b9d"/>
+            </g>
+
+            <!-- FR-14 burgundy, fair -->
+            <g class="crowd-person" style="--delay:0.03s;--base:290">
+              <ellipse cx="1174" cy="229" rx="13" ry="14" fill="#f1c27d"/>
+              <ellipse cx="1174" cy="218" rx="11" ry="6"  fill="#8b5e3c"/>
+              <path d="M1161,244 Q1174,263 1187,244 L1185,290 L1163,290 Z" fill="#880e4f"/>
+              <line x1="1163" y1="251" x2="1138" y2="230" stroke="#f1c27d" stroke-width="7" stroke-linecap="round"/>
+              <line x1="1138" y1="230" x2="1131" y2="209" stroke="#f1c27d" stroke-width="5" stroke-linecap="round"/>
+              <line x1="1185" y1="251" x2="1210" y2="228" stroke="#f1c27d" stroke-width="7" stroke-linecap="round"/>
+              <line x1="1210" y1="228" x2="1217" y2="208" stroke="#f1c27d" stroke-width="5" stroke-linecap="round"/>
+            </g>
+
+            <!-- FR-15 navy, dark, gold flag both hands -->
+            <g class="crowd-person" style="--delay:0.25s;--base:290">
+              <ellipse cx="1262" cy="226" rx="14" ry="15" fill="#8d5524"/>
+              <ellipse cx="1262" cy="214" rx="12" ry="7"  fill="#1a0a00"/>
+              <path d="M1248,242 Q1262,262 1276,242 L1274,290 L1250,290 Z" fill="#1a237e"/>
+              <line x1="1250" y1="249" x2="1225" y2="226" stroke="#8d5524" stroke-width="7" stroke-linecap="round"/>
+              <line x1="1225" y1="226" x2="1217" y2="204" stroke="#8d5524" stroke-width="5" stroke-linecap="round"/>
+              <line x1="1217" y1="204" x2="1217" y2="180" stroke="#d4af37" stroke-width="4"/>
+              <polygon points="1217,180 1237,188 1217,196" fill="#d4af37"/>
+              <line x1="1274" y1="249" x2="1299" y2="225" stroke="#8d5524" stroke-width="7" stroke-linecap="round"/>
+              <line x1="1299" y1="225" x2="1307" y2="203" stroke="#8d5524" stroke-width="5" stroke-linecap="round"/>
+              <line x1="1307" y1="203" x2="1307" y2="179" stroke="#d4af37" stroke-width="4"/>
+              <polygon points="1307,179 1327,187 1307,195" fill="#d4af37"/>
+            </g>
+
+            <!-- FR-16 red, olive -->
+            <g class="crowd-person" style="--delay:0.09s;--base:290">
+              <ellipse cx="1352" cy="228" rx="13" ry="14" fill="#c8a96e"/>
+              <ellipse cx="1352" cy="217" rx="11" ry="6"  fill="#4a2c10"/>
+              <path d="M1339,243 Q1352,262 1365,243 L1363,290 L1341,290 Z" fill="#c62828"/>
+              <line x1="1341" y1="250" x2="1316" y2="229" stroke="#c8a96e" stroke-width="7" stroke-linecap="round"/>
+              <line x1="1316" y1="229" x2="1309" y2="208" stroke="#c8a96e" stroke-width="5" stroke-linecap="round"/>
+              <line x1="1363" y1="250" x2="1388" y2="227" stroke="#c8a96e" stroke-width="7" stroke-linecap="round"/>
+              <line x1="1388" y1="227" x2="1395" y2="207" stroke="#c8a96e" stroke-width="5" stroke-linecap="round"/>
+            </g>
+
+            <!-- FR-17 orange, fair, arms wide, pink flag -->
+            <g class="crowd-person" style="--delay:0.15s;--base:290">
+              <ellipse cx="1418" cy="229" rx="13" ry="14" fill="#ffcd94"/>
+              <ellipse cx="1418" cy="218" rx="11" ry="6"  fill="#6b3a2a"/>
+              <path d="M1405,244 Q1418,263 1431,244 L1429,290 L1407,290 Z" fill="#e64a19"/>
+              <line x1="1407" y1="251" x2="1382" y2="230" stroke="#ffcd94" stroke-width="7" stroke-linecap="round"/>
+              <line x1="1382" y1="230" x2="1374" y2="208" stroke="#ffcd94" stroke-width="5" stroke-linecap="round"/>
+              <line x1="1429" y1="251" x2="1444" y2="228" stroke="#ffcd94" stroke-width="7" stroke-linecap="round"/>
+              <line x1="1444" y1="228" x2="1444" y2="204" stroke="#ff6b9d" stroke-width="4"/>
+              <polygon points="1444,204 1440,184 1444,184" fill="#ff6b9d"/>
+            </g>
+
+            <!-- Ground fill — covers all feet cleanly -->
+            <rect x="0" y="282" width="1440" height="38" fill="url(#gndGrad)"/>
+
+          </svg>
+
+          <!-- Floating name popups — injected by JS -->
+          <div class="name-popups" id="name-popups"></div>
+        </div>
+
+        <!-- ══ BIRTHDAY WISH MODAL CARD ══
+             Hidden until JS triggers it after the trophy celebration.
+             The crowd scene fades out and this springs in on top.
+        -->
+        <div id="birthday-wish-card" aria-live="polite" aria-label="Birthday wish card">
+
+          <!-- Floating trophy icon above the card -->
+          <div class="bwc-trophy-icon" aria-hidden="true">🏆</div>
+
+          <!-- Card body -->
+          <div class="bwc-body">
+
+            <!-- Corner accent marks (decorative) -->
+            <span class="bwc-corner bwc-corner--tl" aria-hidden="true"></span>
+            <span class="bwc-corner bwc-corner--tr" aria-hidden="true"></span>
+            <span class="bwc-corner bwc-corner--bl" aria-hidden="true"></span>
+            <span class="bwc-corner bwc-corner--br" aria-hidden="true"></span>
+
+            <!-- Eyebrow tag -->
+            <p class="bwc-tag">🎊 &nbsp; SPECIAL ANNOUNCEMENT &nbsp; 🎊</p>
+
+            <!-- Main heading -->
+            <h2 class="bwc-title">
+              HAPPY BIRTHDAY<br>
+              <span class="bwc-name"> ANNESHA ❤️</span>
+            </h2>
+
+            <!-- Divider -->
+            <div class="bwc-divider" aria-hidden="true">
+              <span class="bwc-div-line"></span>
+              <span class="bwc-div-star">✦</span>
+              <span class="bwc-div-line"></span>
+            </div>
+
+            <!-- Quote -->
+            <p class="bwc-quote">
+              "Today the stadium cheers for you,<br>
+              but my heart celebrates you even louder ✨"
+            </p>
+
+            <!-- CTA -->
+            <button class="bwc-btn" id="breaking-news-btn" aria-hidden="true">
+              <span class="bwc-btn-shimmer" aria-hidden="true"></span>
+              Breaking News Awaits 📰
+            </button>
+
+          </div><!-- end .bwc-body -->
+
+        </div><!-- end #birthday-wish-card -->
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =============================================
+       SCREEN 5 — NEWSPAPER
+       ============================================= -->
+  <section id="newspaper-screen" aria-hidden="true">
+
+    <div class="np-page">
+
+      <!-- Newspaper header -->
+      <header class="np-header">
+        <div class="np-meta">
+          <span>VOL. 1 &nbsp;•&nbsp; EST. TODAY</span>
+          <span class="np-date" id="np-date"><!-- filled by JS --></span>
+          <span>SPECIAL EDITION</span>
+        </div>
+        <h1 class="np-masthead">THE BIRTHDAY GAZETTE</h1>
+        <div class="np-rule"></div>
+        <h2 class="np-headline">MAN OF THE MATCH: <span class="np-name">ANNESHA</span></h2>
+        <div class="np-rule np-rule--thin"></div>
+      </header>
+
+      <!-- Two-column body -->
+      <div class="np-body">
+
+        <!-- Column 1 — Photos: photo1 + photo2 + stats -->
+        <div class="np-col np-col--photo">
+
+          <!-- Image 1 -->
+          <figure class="np-photo-frame" aria-label="Match hero photo">
+            <img src="image4.jpeg" alt="Match Hero Photo" class="np-photo-img" />
+          </figure>
+
+          <!-- Stats sidebar -->
+          <div class="np-sidebar-stats">
+            <p><strong>Innings:</strong> Lifetime</p>
+            <p><strong>Runs Scored:</strong> ∞</p>
+            <p><strong>Boundaries:</strong> Countless</p>
+            <p><strong>Not Out:</strong> Always ❤️</p>
+          </div>
+
+          <!-- Image 2 -->
+          <figure class="np-photo-frame np-photo-frame--2nd" aria-label="Second memory photo">
+            <img src="photo1.jpeg" alt="Second Memory Photo" class="np-photo-img" />
+          </figure>
+
+          <!-- PERSONAL RECORDS box -->
+          <div class="np-sidebar-stats np-sidebar-stats--memory">
+            <p class="np-sidebar-stats-head">PERSONAL RECORDS</p>
+            <p><strong>Best Moment:</strong> Truth or Dare 🎲</p>
+            <p><strong>Distance:</strong> Just a Number 📍</p>
+            <p><strong>Status:</strong> Forever In Love ❤️</p>
+            <p><strong>Est. Since:</strong> 16 March 2022 ⭐</p>
+          </div>
+
+        </div>
+
+        <!-- Column 2 — Story text -->
+        <div class="np-col np-col--story">
+          <h3 class="np-subhead">THE FIRST INNINGS — WHERE IT ALL BEGAN</h3>
+          <div class="np-rule np-rule--thin"></div>
+
+          <p class="np-body-text">
+            "Every story has a first innings, and ours quietly began in 2020.
+            You know how, when you first meet someone, you usually just think it is that simple first impression?
+            Somehow, with you, it felt a little different. I kept thinking about it, going over it in my head, wondering what exactly it was.
+            Maybe I simply wasn't wise enough back then to understand what I was feeling. And how could I have been?
+            I didn't even know you. But they say when an unfamiliar person somehow feels right to your heart, you don't really need time to know them—you just know.
+            Sometimes, it takes less than a nanosecond. Maybe that was exactly what happened to me."
+          </p>
+          <p class="np-body-text">
+            "And then, just when I had started trying to build a friendship with you, my luck decided to play its part—COVID came along.
+            School closed on 17 March 2020. Everyone else might have been happy about the sudden holiday, but I really wasn't.
+            After that, we barely had any contact at all. Looking back now, though, I feel like some of the best moments of my life were the ones I got to live in 2022.
+            Even now, I sometimes wish I could go back to those days, because if I could, I would probably spend a little more time with you."
+          </p>
+          <p class="np-body-text np-body-text--drop">
+            "Then, on 16 March 2022, we started talking again. But this time, something felt different.
+            There was a strange little pull in our conversations, something I couldn't quite put into words—and honestly, I didn't mind it at all.
+            I don't think I have forgotten a single moment after that. The whole story would probably take more pages than I have here, but those Truth or Dare moments?
+            Those are the ones I remember far too well."
+          </p>
+          <p class="np-body-text np-body-text--drop">
+            "And then came 19 February 2023. I was genuinely so happy that day—at least until I read the last three lines of the page you had given me.
+            Until that moment, all I could think about was how happy I was that you had accepted me. Then those three lines told me that you were going to leave,
+            and suddenly there was something else mixed into that happiness—a little sadness, because the person who had just accepted me was also going to be far away from me.
+            But honestly, the happiness was still greater than the sadness. Because distance never really mattered if we were both still right there for each other.
+            And perhaps what made me happiest of all was simply knowing that the person I had come to like so deeply had chosen to accept me too."
+          </p>
+
+          <!-- Quote fills the blank space at the bottom of the right column -->
+          <blockquote class="np-highlight-quote np-highlight-quote--story-end">
+            <p>
+              "And maybe that was the real beginning of our innings — not the day
+              we first met, but the day we both chose to be in the same game."
+            </p>
+            <footer class="np-highlight-quote__attr">
+              — THE BIRTHDAY GAZETTE, SPECIAL EDITION
+            </footer>
+          </blockquote>
+
+        </div>
+
+      </div><!-- end .np-body -->
+
+      <!-- =============================================
+           SECTION 2: EDITORIAL
+           LEFT = Editorial text | RIGHT = Images + Quote
+           ============================================= -->
+      <div class="np-rule np-rule--thick" role="separator"></div>
+
+      <div class="np-extra-sections">
+
+        <!-- LEFT column — Editorial text -->
+        <article class="np-article np-article--editorial">
+          <p class="np-section-label">Editorial</p>
+          <h3 class="np-article-head">PRESENT — THE GAME WE'RE STILL PLAYING</h3>
+          <div class="np-rule np-rule--thin"></div>
+
+          <p class="np-body-text np-body-text--drop-sm">
+            Honestly, I never thought long distance would feel this easy. I used to wonder about all the things that could go wrong,
+            how difficult it might become, and whether we would really be able to make it work. But somehow, I don't have those worries anymore.
+            If someone ever asked me about you, I could answer from the deepest part of my heart without even thinking twice: I'm the happiest person in the world to be in this relationship.
+            The distance doesn't feel nearly as big as it looks on a map. I think I realised that a long time ago—not simply because I chose to believe it,
+            but because you chose to stand beside me and made it feel possible. And I trust you enough to believe that you won't stop standing there. So, whatever the future brings,
+            I know we'll face it together and eventually win this little battle against the distance.
+          </p>
+          <p class="np-body-text">
+            And please remember one thing: I never want you to carry unnecessary worries about us. I haven't let them take over my mind until now,
+            and I won't let them do so in the future either. I'll always want you to focus on your own life, your own dreams, and keep moving forward just the way you have been.
+            We've made it this far by simply being there for each other, and I believe we'll keep doing exactly that. One day, you'll come into my life in a way that leaves no room
+            for anyone to question us—no one left to say that this was impossible, no one left to doubt that we could make it. Because this innings isn't ending here; we're still playing,
+            and I already know which side I'm betting on.
+          </p>
+          <p class="np-body-text">
+            Ahh, I don't even know what I'm writing anymore—I'm just writing everything in one sitting, and somehow I almost forgot the most important thing:
+            it's your birthday, and here I am writing instead of simply wishing you. So, Happy Birthday, my love. ❤️ Wherever life has you today,
+            I hope you're happy, safe, and surrounded by everything that makes you smile. And once again, happy birthday to the person who became such a huge part of my life.
+            I don't think I could ever properly thank you for that, because "thanks" is only six letters, and six little letters could never be enough to hold everything I feel for having you in my life.
+            So I'll just keep saying it in every way I know—through every page, every memory, and every innings still waiting to be played. ❤️🏏
+          </p>
+          <p class="np-editorial-byline">— The Birthday Gazette Editorial Board</p>
+        </article>
+
+        <!-- Vertical column rule -->
+        <div class="np-col-rule" aria-hidden="true"></div>
+
+        <!-- RIGHT column — Image 3 + quotes + stats + Image 4 -->
+        <div class="np-article np-article--images">
+
+          <!-- Image 3 -->
+          <div class="np-photo-block np-photo-block--large">
+            <figure class="np-photo-frame" aria-label="Special match moment photo">
+              <img
+                src="1st page.jpeg"
+                alt="Special Match Moment"
+                class="np-photo-img"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+              />
+              <div class="np-photo-placeholder" style="display:none;">
+                <span class="np-photo-icon" aria-hidden="true">📸</span>
+                <p class="np-photo-caption">Replace with photo3.jpeg</p>
+              </div>
+            </figure>
+            <div class="np-photo-caption-bar">
+              <p class="np-photo-caption-text">
+                The most precious gift from that time, one that will time last forever
+              </p>
+            </div>
+          </div>
+
+          <!-- Quote cards — 3 specific quotes -->
+          <figure class="np-quote-box">
+            <blockquote class="np-blockquote">
+              <span class="np-quote-mark">"</span>
+              Distance means so little when someone means so much.
+              This player proved it every single over.
+              <span class="np-quote-mark">"</span>
+            </blockquote>
+            <figcaption class="np-quote-attr">— The Commentator</figcaption>
+          </figure>
+
+          <figure class="np-quote-box">
+            <blockquote class="np-blockquote">
+              <span class="np-quote-mark">"</span>
+              16 March 2022 — the moment the game changed forever.
+              Some dates are just written in the scorecard of fate.
+              <span class="np-quote-mark">"</span>
+            </blockquote>
+            <figcaption class="np-quote-attr">— Match Chronicles</figcaption>
+          </figure>
+
+          <figure class="np-quote-box">
+            <blockquote class="np-blockquote">
+              <span class="np-quote-mark">"</span>
+              Whatever the future brings, we win together.
+              That has always been the team's strategy.
+              <span class="np-quote-mark">"</span>
+            </blockquote>
+            <figcaption class="np-quote-attr">— Head Coach</figcaption>
+          </figure>
+
+          <!-- Quick stat strip -->
+          <div class="np-stat-strip">
+            <div class="np-stat-item">
+              <span class="np-stat-val">∞</span>
+              <span class="np-stat-lbl">Smiles Given</span>
+            </div>
+            <div class="np-stat-item">
+              <span class="np-stat-val">01</span>
+              <span class="np-stat-lbl">Bad Days Caused</span>
+            </div>
+            <div class="np-stat-item">
+              <span class="np-stat-val">100%</span>
+              <span class="np-stat-lbl">Love Average</span>
+            </div>
+          </div>
+
+          <!-- Image 4 — clean frame matching photo 1 & 2 style -->
+          <div class="np-photo-block">
+            <figure class="np-photo-frame" aria-label="Fourth memory photo">
+              <img
+                src="2nd page.jpeg"
+                alt="Special Memory Photo"
+                class="np-photo-img"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+              />
+              <div class="np-photo-placeholder" style="display:none;">
+                <span class="np-photo-icon" aria-hidden="true">📸</span>
+                <p class="np-photo-caption">Replace with photo4.jpeg</p>
+              </div>
+            </figure>
+            <div class="np-photo-caption-bar">
+              <p class="np-photo-caption-text">
+                Another chapter, another memory — always worth keeping
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div><!-- end .np-extra-sections -->
+
+      <div class="np-rule np-rule--thick" role="separator"></div>
+
+      <!-- ── PLOT 3: Full-width Verdict Banner ── -->
+      <section class="np-verdict-banner" aria-label="Official Gazette Verdict">
+
+        <p class="np-section-label np-section-label--center">Official Gazette Verdict</p>
+
+        <div class="np-verdict-frame">
+
+          <!-- Ornamental corners -->
+          <span class="np-orn np-orn--tl" aria-hidden="true">✦</span>
+          <span class="np-orn np-orn--tr" aria-hidden="true">✦</span>
+          <span class="np-orn np-orn--bl" aria-hidden="true">✦</span>
+          <span class="np-orn np-orn--br" aria-hidden="true">✦</span>
+
+          <p class="np-verdict-kicker">UNANIMOUS DECISION · ALL DEPARTMENTS</p>
+
+          <h2 class="np-verdict-head">
+            Player of the Decade
+          </h2>
+
+          <div class="np-verdict-divider" aria-hidden="true">
+            — ✦ ✦ ✦ —
+          </div>
+
+          <p class="np-verdict-body">
+            There are some people whose presence changes a life in ways that words can never fully explain.
+             You came into mine and gave me so much more than I could have ever asked for—memories, happiness,
+              and a reason to be grateful for having you in my story.
+          </p>
+          <p class="np-verdict-body">
+          I may never find words big enough to express what that means to me.
+           But if there is one thing I know for certain, it is that having you in my life is something I will always be grateful for.
+          </p>
+
+          <p class="np-verdict-body">
+            So, on your birthday, this is my little verdict:
+            You are, and will always be, one of the greatest gifts life has ever given me.
+          </p>
+          
+
+          <p class="np-verdict-body">
+            Verdict: Unmatched. Unrepeatable. Irreplaceable.
+            Awarded with all the love in my heart. 
+          </p>
+
+
+          <p class="np-verdict-seal">
+            Sealed &amp; Published with Love<br>
+            <em>The Birthday Gazette — Special Edition</em>
+          </p>
+
+        </div><!-- end .np-verdict-frame -->
+
+      </section><!-- end .np-verdict-banner -->
+      <div class="np-footer">
+        <div class="np-rule"></div>
+        <button class="np-replay-btn" id="replay-btn" aria-label="Restart from the beginning">
+          🏏 Relive The Birthday Match
+        </button>
+        <p class="np-credit">Printed with love &nbsp;•&nbsp; Birthday Edition</p>
+      </div>
+
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
